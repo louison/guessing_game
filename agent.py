@@ -4,24 +4,30 @@ import pandas as pd
 import csv
 import random
 
-#Initiate all states possible from spaces [1-n]
+#Initiate all states/actions possible from spaces [1-n]
 def init_states_map(n):
-	states_map = {}
 	key = 0
+	indexes = []
 	for i in range(1,n+1):
 		for j in range(1,n+1):
 			if i <= j: #lower bound can't by higher than higher bound
-				key += 1
-				states_map[key] = [[i,j], 0]
+				indexes.append((i,j))
+	indexes = pd.MultiIndex.from_tuples(indexes, names=('minRange', 'maxRange'))
+	states_map = pd.DataFrame(0, index=indexes, columns=[1,2,3,4,5,6,7,8,9,10])
 	return states_map
 
 
 def find_future_states(state, states_map):
-	future_states = {}
-	for i in range(1, len(states_map) +1):
-		if(states_map[i][0][0] >= state[0] and states_map[i][0][1] <= state[1]):
-			future_states[i] = states_map[i]
-	return future_states
+	print(states_map)
+	print('---------------')
+	#states_map[action][minRange][maxRanges]
+	states_map[10][5][5] = 4
+	print(states_map)
+	# future_states = {}
+	# for i in range(1, len(states_map) +1):
+	# 	if(states_map[i][0][0] >= state[0] and states_map[i][0][1] <= state[1]):
+	# 		future_states[i] = states_map[i]
+	# return future_states
 
 
 def find_best_choice(future_states, n):
@@ -61,8 +67,6 @@ def update_q_values(states_map, state, new_state, alpha, gamma, pos_r, neg_r):
 	print(state, new_state, old_state_q_value, new_state_q_value)
 	if(new_state == 'won'):
 		states_map[states_map_index][1] += alpha*(pos_r + gamma*new_state_q_value - old_state_q_value)
-	else:
-		states_map[states_map_index][1] += alpha*(neg_r + gamma*new_state_q_value - old_state_q_value)
 
 
 

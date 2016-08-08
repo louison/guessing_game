@@ -27,20 +27,29 @@ def find_dec(state, choice):
 #Inititiating all states for range n
 states_map = agent.init_states_map(n)
 
-#Number of games the agent will play
-for i in range(game_number):
-	#New Game
-	state, magic_number = game.init_game()
+state, magic_number = game.init_game()
+future_states_map = agent.find_future_states(state, states_map)
 
-	#Game is won when agent find the state [magic_number, magic_number]
-	while state != [magic_number, magic_number]:
+
+
+
+
+
+
+#Number of games the agent will play
+# for i in range(game_number):
+# 	#New Game
+# 	state, magic_number = game.init_game()
+
+# 	#Game is won when agent find the state [magic_number, magic_number]
+# 	while state != 'won':
 		
-		future_states_map = agent.find_future_states(state, states_map)
-		best_choice = agent.find_best_choice(future_states_map, n)
-		choice = agent.give_choice(best_choice, epsilon, future_states_map)
-		dec = find_dec(state, choice)
-		new_state = game.play(dec, magic_number)
-		agent.update_q_values(states_map, state, new_state, alpha, gamma, pos_r, neg_r)
-		state = new_state
+# 		future_states_map = agent.find_future_states(state, states_map)
+# 		best_choice = agent.find_best_choice(future_states_map, n)
+# 		choice = agent.give_choice(best_choice, epsilon, future_states_map)
+# 		dec = find_dec(state, choice)
+# 		new_state = game.play(dec, magic_number)
+# 		agent.update_q_values(states_map, state, new_state, alpha, gamma, pos_r, neg_r)
+# 		state = new_state
 
 

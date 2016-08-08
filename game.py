@@ -16,7 +16,7 @@ def init_game():
 	global n 
 	higher_bound = n
 	magic_number = random.randint(1,n)
-	state = [1,n]
+	state = (1,n)
 	return state, magic_number
 
 def play(dec, magic_number):
