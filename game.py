@@ -30,16 +30,17 @@ def play(dec, magic_number):
     #Higher
 	if(dec < magic_number):
 		lower_bound = dec+1
-		state = [dec+1, higher_bound]
+		state = (dec+1, higher_bound)
 
 	#Lower
 	elif(dec > magic_number):
 		higher_bound = dec-1
-		state = [lower_bound, dec-1]
+		state = (lower_bound, dec-1)
 	else:
 		state = 'won'
 		higher_bound = n
 		lower_bound = 1
+		print('------------WON-------------')
 	return state
 
 

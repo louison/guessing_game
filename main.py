@@ -7,7 +7,7 @@ import agent
 import game
 
 
-game_number = 1000
+game_number = 10
 n = 10
 epsilon = 0.3
 alpha = 0.5
@@ -35,10 +35,10 @@ for i in range(game_number):
 		
 		future_states_map = agent.find_future_states(state, states_map)
 		best_choice = agent.find_best_choice(future_states_map, state)
-# 		choice = agent.give_choice(best_choice, epsilon, future_states_map, state)
-# 		new_state = game.play(choice, magic_number)
-# 		agent.update_q_values(states_map, state, choice, new_state, alpha, gamma, neg_r)
-# 		state = new_state
+		choice = agent.give_choice(best_choice, epsilon, future_states_map, state)
+		new_state = game.play(choice, magic_number)
+		agent.update_q_values(states_map, state, choice, new_state, alpha, gamma, neg_r)
+		state = new_state
 
 # print(states_map)
 

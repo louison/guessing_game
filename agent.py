@@ -16,26 +16,25 @@ def init_states_map(n):
 
 def find_future_states(state, states_map):
 	print(states_map)
-	state = (2,6)
-	indexes = [index for index in states_map.index.values if 2 <= index[0] <= 6 and 2 <= index[1] <= 6 and index != state]  
-	print(indexes)
+	indexes = [index for index in states_map.index.values if state[0] <= index[0] <= state[1] and state[0] <= index[1] <= state[1]]  
 	future_states = states_map.ix[indexes]
-	print(future_states)
-	exit()
 	return future_states
 
 def find_best_choice(future_states, state):
-	# print(future_states)
-	# max_q = future_states[state]
-	# print(max_q)
+	print(future_states)
+	actions_state = future_states.ix[[state]]
+	print(actions_state)
+	if(actions_state.values.all() == 0):
+		best_choice = random.randint(1,10)
+	else:
+		best_choice = actions_state.idxmax(axis = 1)[0] +1
+	print(best_choice)
 	return best_choice
 
 
 def give_choice(best_choice, epsilon, future_states, state):
 	if(np.random.rand(1)[0] < epsilon):
-		for i in future_states:
-			if(future_states[i][0] == state):
-				choice = random.choice(list(future_states[i][1].keys()))
+		choice = random.randint(1,10)
 	else:
 		choice = best_choice
 	return choice
@@ -62,11 +61,8 @@ def find_best_q_value(state, states_map):
 
 
 def update_q_values(states_map, state, choice, new_state, alpha, gamma, neg_r):
-	index = -1
-	for i in states_map:
-			if(states_map[i][0] == new_state):
-				index = i
-	max_q_plus_un = find_best_q_value(new_state, states_map)
+	actions_new_state = states_map.ix[[new_state]]
+	max_q_new_state = actions_new_state.idxmax(axis = 1)[0] +1
 
 	if(new_state != 'won'):
-		states_map[index][1][choice] += alpha*(neg_r + gamma*max_q_plus_un - states_map[index][1][choice])
+		states_map.ix[[state], choice-1] += alpha*(neg_r + gamma*max_q_new_state - states_map.ix[[state], choice-1])
