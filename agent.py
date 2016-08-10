@@ -4,49 +4,40 @@ import pandas as pd
 import csv
 import random
 
-#Initiate all states/actions possible from spaces [1-n]
 def init_states_map(n):
-	key = 0
 	indexes = []
 	for i in range(1,n+1):
 		for j in range(1,n+1):
 			if i <= j: #lower bound can't by higher than higher bound
 				indexes.append((i,j))
-	indexes = pd.MultiIndex.from_tuples(indexes, names=('minRange', 'maxRange'))
-	states_map = pd.DataFrame(0, index=indexes, columns=[1,2,3,4,5,6,7,8,9,10])
+	states_map = pd.DataFrame(0, index=indexes, columns = np.arange(n))
 	return states_map
 
 
 def find_future_states(state, states_map):
 	print(states_map)
-	print('---------------')
-	#states_map[action][minRange][maxRanges]
-	states_map[10][5][5] = 4
-	print(states_map)
-	# future_states = {}
-	# for i in range(1, len(states_map) +1):
-	# 	if(states_map[i][0][0] >= state[0] and states_map[i][0][1] <= state[1]):
-	# 		future_states[i] = states_map[i]
-	# return future_states
+	state = (2,6)
+	indexes = [index for index in states_map.index.values if 2 <= index[0] <= 6 and 2 <= index[1] <= 6 and index != state]  
+	print(indexes)
+	future_states = states_map.ix[indexes]
+	print(future_states)
+	exit()
+	return future_states
+
+def find_best_choice(future_states, state):
+	# print(future_states)
+	# max_q = future_states[state]
+	# print(max_q)
+	return best_choice
 
 
-def find_best_choice(future_states, n):
-	best_q_value = 0
-	best_state = [1,n]
-	for i in future_states:
-		if(future_states[i][1] > best_q_value):
-			best_q_value = future_states[i][1]
-			best_state = future_states[i][0]
-	return best_state
-
-
-def give_choice(best_state, epsilon, future_states):
+def give_choice(best_choice, epsilon, future_states, state):
 	if(np.random.rand(1)[0] < epsilon):
-		print(future_states)
-		choice_index = random.choice(list(future_states.keys()))
-		choice = future_states[choice_index][0]
+		for i in future_states:
+			if(future_states[i][0] == state):
+				choice = random.choice(list(future_states[i][1].keys()))
 	else:
-		choice = best_state
+		choice = best_choice
 	return choice
 
 def find_state(states_map, state):
@@ -54,24 +45,28 @@ def find_state(states_map, state):
 		if(states_map[i][0] == state):
 			return i
 
-def find_q_value(states_map, state):
+def find_q_value(states_map, state, choice):
 	for i in states_map:
 		if(states_map[i][0] == state):
-			return states_map[i][1]
+			return states_map[i][1][choice]
 
-
-def update_q_values(states_map, state, new_state, alpha, gamma, pos_r, neg_r):
-	states_map_index = find_state(states_map, state)
-	new_state_q_value = find_q_value(states_map, new_state)
-	old_state_q_value = find_q_value(states_map, state)
-	print(state, new_state, old_state_q_value, new_state_q_value)
-	if(new_state == 'won'):
-		states_map[states_map_index][1] += alpha*(pos_r + gamma*new_state_q_value - old_state_q_value)
-
-
-
+def find_best_q_value(state, states_map):
+	best_q_value = 0
+	for i in states_map:
+		if(states_map[i][0] == state):
+			for key in states_map[i][1]:
+				if(states_map[i][1][key] >= best_q_value):
+					best_q_value = states_map[i][1][key]
+	return best_q_value
 
 
 
+def update_q_values(states_map, state, choice, new_state, alpha, gamma, neg_r):
+	index = -1
+	for i in states_map:
+			if(states_map[i][0] == new_state):
+				index = i
+	max_q_plus_un = find_best_q_value(new_state, states_map)
 
-
+	if(new_state != 'won'):
+		states_map[index][1][choice] += alpha*(neg_r + gamma*max_q_plus_un - states_map[index][1][choice])
