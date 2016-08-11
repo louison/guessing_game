@@ -7,12 +7,13 @@ import agent
 import game
 
 
-game_number = 20
+game_number = 1000000
 n = 10
 epsilon = 0.3
 alpha = 0.5
 gamma = 0.9
 neg_r = -1
+pos_r = 5
 
 #Inititiating all states for range n
 states_map = agent.init_states_map(n)
@@ -26,9 +27,11 @@ for i in range(game_number):
 	#Game is won when agent find the state [magic_number, magic_number]
 	while state != 'won':
 		
-		future_states_map = agent.find_future_states(state, states_map)
-		best_choice = agent.find_best_choice(future_states_map, state)
+		future_states_map, indexes, columns = agent.find_future_states(state, states_map)
+		best_choice = agent.find_best_choice(state, states_map, columns)
 		choice = agent.give_choice(best_choice, epsilon, future_states_map, state)
 		new_state = game.play(choice, magic_number)
-		agent.update_q_values(states_map, state, choice, new_state, alpha, gamma, neg_r)
+		agent.update_q_values(states_map, state, choice, new_state, alpha, gamma, neg_r, pos_r)
 		state = new_state
+
+print (states_map)

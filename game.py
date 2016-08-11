@@ -4,15 +4,13 @@ import pandas as pd
 import csv
 import random
 
-
-higher_bound = 0
-lower_bound = 1
 n = 10
+higher_bound = n
+lower_bound = 1
+
 
 
 def init_game():
-	global higher_bound
-	global lower_bound
 	global n 
 	higher_bound = n
 	magic_number = random.randint(1,n)
@@ -25,7 +23,6 @@ def play(dec, magic_number):
 	global lower_bound
 	#gérer lower bound & higher bound
 	##les passer dans initgame et les mettre en global
-	#
 
     #Higher
 	if(dec < magic_number):
