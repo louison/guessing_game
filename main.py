@@ -7,7 +7,7 @@ import agent
 import game
 
 
-game_number = 10
+game_number = 100000
 n = 10
 epsilon = 0.3
 alpha = 0.5
@@ -30,6 +30,7 @@ states_map = agent.init_states_map(n)
 for i in range(game_number):
 	#New Game
 	state, magic_number = game.init_game()
+	print(states_map)
 	#Game is won when agent find the state [magic_number, magic_number]
 	while state != 'won':
 		
@@ -39,6 +40,7 @@ for i in range(game_number):
 		new_state = game.play(choice, magic_number)
 		agent.update_q_values(states_map, state, choice, new_state, alpha, gamma, neg_r)
 		state = new_state
+
 
 # print(states_map)
 

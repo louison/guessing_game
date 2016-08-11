@@ -15,20 +15,18 @@ def init_states_map(n):
 
 
 def find_future_states(state, states_map):
-	print(states_map)
 	indexes = [index for index in states_map.index.values if state[0] <= index[0] <= state[1] and state[0] <= index[1] <= state[1]]  
 	future_states = states_map.ix[indexes]
 	return future_states
 
 def find_best_choice(future_states, state):
-	print(future_states)
 	actions_state = future_states.ix[[state]]
-	print(actions_state)
 	if(actions_state.values.all() == 0):
 		best_choice = random.randint(1,10)
+		print('random best_choice : ' + str(best_choice))
 	else:
 		best_choice = actions_state.idxmax(axis = 1)[0] +1
-	print(best_choice)
+		print('decided best_choice : ' + str(best_choice))
 	return best_choice
 
 
