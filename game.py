@@ -40,7 +40,7 @@ def play(dec, magic_number):
 		state = 'won'
 		higher_bound = n
 		lower_bound = 1
-		print('------------WON-------------')
+		# print('------------WON-------------')
 	return state
 
 

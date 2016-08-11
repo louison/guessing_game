@@ -7,21 +7,12 @@ import agent
 import game
 
 
-game_number = 100000
+game_number = 20
 n = 10
 epsilon = 0.3
 alpha = 0.5
 gamma = 0.9
 neg_r = -1
-
-def find_dec(state, choice):
-	if(state[0] == choice[0]):
-		return choice[1]
-	else:
-		if(state[1] == choice[1]):
-			return choice[0]
-		else:
-			return random.randint(choice[0], choice[1])
 
 #Inititiating all states for range n
 states_map = agent.init_states_map(n)
@@ -30,7 +21,8 @@ states_map = agent.init_states_map(n)
 for i in range(game_number):
 	#New Game
 	state, magic_number = game.init_game()
-	print(states_map)
+	# print(states_map)
+
 	#Game is won when agent find the state [magic_number, magic_number]
 	while state != 'won':
 		
@@ -40,14 +32,3 @@ for i in range(game_number):
 		new_state = game.play(choice, magic_number)
 		agent.update_q_values(states_map, state, choice, new_state, alpha, gamma, neg_r)
 		state = new_state
-
-
-# print(states_map)
-
-		# choice = agent.give_choice(best_choice, epsilon, future_states_map)
-		# dec = find_dec(state, choice)
-		# new_state = game.play(dec, magic_number)
-		# agent.update_q_values(states_map, state, new_state, alpha, gamma, pos_r, neg_r)
-		# state = new_state
-
-
