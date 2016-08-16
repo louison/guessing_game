@@ -4,21 +4,11 @@ import pandas as pd
 import csv
 import random
 
-def init_states_map(n):
-	indexes = []
-	for i in range(1,n+1):
-		for j in range(1,n+1):
-			if i <= j: #lower bound can't by higher than higher bound
-				indexes.append((i,j))
-	states_map = pd.DataFrame(0, index=indexes, columns = np.arange(1, n+1))
-	return states_map
-
-
 def find_future_states(state, states_map):
 	indexes = [index for index in states_map.index.values if state[0] <= index[0] <= state[1] and state[0] <= index[1] <= state[1]]  
 	columns = [columns for columns in states_map.columns if state[0] <= columns <= state[1]]
-	future_states = states_map.ix[indexes, columns]
-	return future_states, indexes, columns
+	# future_states = states_map.ix[indexes, columns]
+	return indexes, columns
 
 def find_best_choice(state, states_map, columns):
 	actions_state = states_map.ix[[state]]
@@ -31,7 +21,7 @@ def find_best_choice(state, states_map, columns):
 	return best_choice
 
 
-def give_choice(best_choice, epsilon, future_states, state):
+def give_choice(best_choice, epsilon, state):
 	if(np.random.rand(1)[0] < epsilon):
 		choice = random.randint(state[0],state[1])
 	else:
@@ -60,9 +50,10 @@ def find_best_q_value(state, states_map):
 
 
 def update_q_values(states_map, state, choice, new_state, alpha, gamma, neg_r, pos_r):
-
 	if(new_state != 'won'):
 		actions_new_state = states_map.ix[[new_state]]
+		# test = actions_new_state.values[actions_new_state.columns.all() >= new_state[0] and actions_new_state.columns <= new_state[1]]
+		# print(test)
 		columns = [column for column in actions_new_state.columns if new_state[0] <= column <= new_state[1]]
 		max_q_new_state = max(actions_new_state[columns])
 		states_map.ix[[state], choice] += alpha*(neg_r + gamma*max_q_new_state - states_map.ix[[state], choice])

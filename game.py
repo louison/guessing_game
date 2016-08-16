@@ -4,14 +4,23 @@ import pandas as pd
 import csv
 import random
 
-n = 10
+n = 100
 higher_bound = n
 lower_bound = 1
 
-
+def init_states_map():
+	indexes = []
+	for i in range(1,n+1):
+		for j in range(1,n+1):
+			if i <= j: #lower bound can't by higher than higher bound
+				indexes.append((i,j))
+	states_map = pd.DataFrame(0, index=indexes, columns = np.arange(1, n+1))
+	return states_map
 
 def init_game():
 	global n 
+	global higher_bound
+	global lower_bound
 	higher_bound = n
 	magic_number = random.randint(1,n)
 	state = (1,n)
