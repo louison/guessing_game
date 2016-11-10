@@ -4,7 +4,7 @@ import pandas as pd
 import csv
 import random
 
-n = 100
+n = 10
 higher_bound = n
 lower_bound = 1
 
