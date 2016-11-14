@@ -27,7 +27,7 @@ states_map = game.init_states_map()
 # Number of games the agent will play
 for i in range(game_number):
 	guesses = 0
-	#New Game
+	# New Game
 	state, magic_number = game.init_game()
 	# print(states_map)
 	
@@ -38,12 +38,12 @@ for i in range(game_number):
 		best_choice = agent.find_best_choice(state, future_states)
 		choice = agent.give_choice(best_choice, epsilon, state)
 		new_state = game.play(choice, magic_number)
-		agent.update_q_values(states_map, future_states, state, choice, new_state, alpha, gamma, neg_r, pos_r)
+		agent.update_q_values(states_map, future_states, state, choice, new_state, alpha, gamma, neg_r)
 		state = new_state
 	total_number_guess = total_number_guess + guesses
 	game_counter = game_counter + 1
-	print(round(total_number_guess/game_counter, 2))
-	print(game_number - game_counter)
+	# print(round(total_number_guess/game_counter, 2))
+	# print(game_number - game_counter)
 
 print (states_map)
 states_map.to_csv("states_map.csv")

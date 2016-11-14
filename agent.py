@@ -19,7 +19,6 @@ def find_best_choice(state, future_states):
 		# print('random best_choice : ' + str(best_choice))
 	else:
 		best_choice = actions_state.idxmax(axis = 1)[0]
-		# print('decided best_choice : ' + str(best_choice))
 	return best_choice
 
 
@@ -31,7 +30,7 @@ def give_choice(best_choice, epsilon, state):
 	return choice
 
 
-def update_q_values(states_map, future_states ,state, choice, new_state, alpha, gamma, neg_r, pos_r):
+def update_q_values(states_map, future_states ,state, choice, new_state, alpha, gamma, neg_r):
 	if(new_state != 'won'):
 		future_new_states = find_future_states(new_state, future_states)
 		actions_new_state = future_new_states.ix[[new_state]]
